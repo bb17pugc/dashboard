@@ -1,0 +1,85 @@
+{% extends 'musicapp/layout.html' %}
+{% load static %}
+{% block content %}
+<div class="col-lg-12 col-md-12 col-sm-12 " style="padding:0px" >
+    {% if messages %}
+        {% for message in messages %}
+                <h4  class="text-center alert alert-{{message.tags}}" >
+                    {{message}}
+                </h4>
+        {% endfor %}
+    {% endif %}
+</div>
+<form action="" method="POST" >
+    {% csrf_token %}
+    <input type="hidden" value="{{user.id}}" name="id" >
+<div class="col-lg-12 col-md-12 col-sm-12" >
+        <h2 class="text-center" >
+            Profile 
+        </h2>
+        <hr>
+    <div  class="col-lg-12 col-md-12 col-sm-12 text-center form-group "  >
+            <img src="{{user.image.url}}" width="20%" style="border-radius: 400px;"  alt=""> 
+    </div>        
+    <div  class="col-lg-12 col-md-12 col-sm-12 form-group "  >
+            <div class="offset-lg-3 col-lg-3 text-left col-md-12 col-sm-12" style="color: gray;"  >
+                    <h3 >first name</h3>
+            </div>
+            <div class="col-lg-4 offset-lg-1 col-md-12  col-sm-12" >
+                        <input type="text" class="form-control" value="{{user.First_Name}}" name="firstname" >  
+            </div>      
+    </div>    
+    <div  class="col-lg-12 col-md-12 col-sm-12 form-group "  >
+        <div class="offset-lg-3 col-lg-3 col-md-12 col-sm-12" style="color: gray;"  >
+                <h3 >last name</h3>
+        </div>
+        <div class="col-lg-4 offset-lg-1 col-md-12  col-sm-12 " >
+            <input type="text" class="form-control" value="{{user.Last_Name}}" name="lastname" >  
+        </div>      
+</div>    
+<div  class="col-lg-12 col-md-12 col-sm-12 form-group "  >
+    <div class="offset-lg-3 col-lg-3 col-md-12 col-sm-12" style="color: gray;"  >
+            <h3 >Email</h3>
+    </div>
+    <div class="col-lg-4 offset-lg-1 col-md-12  col-sm-12 " >
+        <input type="text" class="form-control" value="{{user.Username}}" name="username" >  
+    </div>      
+</div>    
+   
+<div  class="col-lg-12 col-md-12 col-sm-12 form-group "  >
+    <div class="offset-lg-3 col-lg-3 col-md-12 col-sm-12" style="color: gray;"  >
+            <h3 >Gender</h3>
+    </div>
+    <div class="col-lg-4 offset-lg-1 col-md-12  col-sm-12 " >
+        <div style="display: flex;align-items: center;" >
+            <input type="radio" style="border:none;outline:none;width:10% !important" class="form-control" value="male" name="gender">  
+            <h3 class="mx-2" >Male</h3>
+        </div>
+        <div style="display: flex;align-items: center;" >
+            <input type="radio" checked style="border:none;outline:none;width:10% !important" class="form-control" value="male" name="gender">  
+            <h3 class="mx-2" >Female</h3>
+        </div>
+        
+
+    </div>      
+</div>    
+<div  class="col-lg-12 col-md-12 col-sm-12 form-group "  >
+    <div class="offset-lg-3 col-lg-3 col-md-12 col-sm-12" style="color: gray;"  >
+           <a class="btn btn-danger btn-block btn-lg" href="setting?id={{user.id}}" style="color: whitesmoke;" >cancel</a> 
+    </div>
+    <div class="col-lg-3 offset-lg-2 col-md-12  col-sm-12 " >
+        <input class="btn btn-block btn-success btn-lg"  type="submit" value="Update" /> 
+    </div>      
+</div>    
+</div>
+
+</form>
+
+<style>
+    form .form-control
+    {
+        font-size: 20px !important;
+        padding: 20px;
+    }
+</style>
+{% endblock content %}

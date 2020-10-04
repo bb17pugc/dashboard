@@ -1,0 +1,212 @@
+<html>
+    <head>
+        {% load static %}
+        {% csrf_token %}
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!-- Bootstrap CSS -->
+        <script type='text/javascript' src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.8/jquery.validate.min.js"></script>
+        <link href = "https://fonts.googleapis.com/css?family=Roboto+Mono|Roboto+Slab|Roboto:300,400,500,700" rel = "stylesheet" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!------ Include the above in your HEAD tag ---------->
+    
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    
+        <script   src="{% static 'musicapp/fontawesome/js/brands.js' %}"></script>
+        <script   src="{% static 'musicapp/fontawesome/js/solid.js' %}"></script>
+        <script   src="{% static 'musicapp/fontawesome/js/fontawesome.js' %}"></script>
+        <script   src="{% static 'musicapp/fontawesome/js/all.js' %}"></script>
+        
+
+        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+        <script src="//code.jquery.com/ui/1.11.2/jquery-ui.min.js"></script>
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    
+        <link rel="stylesheet" href="{% static 'musicapp/fontawesome/css/all.css' %}">
+        <link rel="stylesheet" href="{% static 'musicapp/fontawesome/css/fontawesome.css' %}">
+        <link rel="stylesheet" href="{% static 'musicapp/fontawesome/css/brands.css' %}">
+        <link rel="stylesheet" href="{% static 'musicapp/fontawesome/css/solid.css' %}">
+
+        
+
+
+<!-- jQuery Modal -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+
+
+        <title>Music</title>
+    </head>
+    <body style="background-color: whitesmoke;" >
+                
+            <div class="col-lg-12 col-md-12 col-sm-12 card" style="padding: 0px;" >
+                    <div class="bg-dark" style="display: flex;justify-content: space-between;" >
+                            <ul class="menu" >
+                                <li>
+                                    <a  href="user_panel" id="user_panel" ><h4>Dashboard</h4></a>
+                                </li>
+                                <li>
+                                    <a  id="user_report" href="user_report" ><h4>Reports</h4></a>
+                                </li>
+                                
+                            </ul>
+                            <ul class="menu">
+                                <li>
+                                    <a  href="#" id="profile" ><h4>{{request.session.email}}</h4></a>
+                                </li>
+                               
+                            </ul>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 card" >
+                        <h3 class="px-4 header" style="text-transform: capitalize;font-size: 30px;" >
+                            Users
+                        </h3>
+                    </div>
+                   
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12" >
+                <p class="url mx-2"  style="font-size: 18px;color: grey;">
+                </p>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 py-4" style="background-color: white;min-height: 80vh;" >
+
+            <div class="col-lg-12 col-md-12 col-sm-12" style="padding: 0px;"  >
+
+            <div class="container" style="padding: 0px;" >
+                {% block content %}
+                {% endblock %}
+            </div>
+            
+        </div>
+        </div>
+        
+        <div class="text-center collapse card profile-box" style="width: 30%;position: absolute;right: 0;top: 90;"  > 
+            <h3 style="color: black;" >Profile</h3>    
+            <hr>
+            <div style="width:100%"  >
+                    <div class="py-4 px-4" >
+                        <img  style="border-radius: 500px;" src="{{request.session.image}}" width="50%" alt="">
+                    </div>
+                    <div class="form-group px-4 " style="display: flex;font-size: 20px;justify-content: space-between;" >
+                        <div style="display: flex;align-items: center;" >
+                            <label for="" style="color: gray;" > first name</label>
+                        </div>
+                        <div>
+                            <h3 style="color: black;display: flex;padding: 0px;margin: 0px;" >   {{request.session.firstname}}</h3>   
+                        </div> 
+                    </div>
+                    <hr>
+                    <div class="form-group px-4  " style="display: flex;font-size: 20px;justify-content: space-between;" >
+                        <div style="display: flex;align-items: center;" >
+                            <label for="" style="color: gray;" > last name</label>
+                        </div>
+                        <div>
+                            <h3 style="color: black;display: flex;padding: 0px;margin: 0px;" >   {{request.session.lastname}}</h3>   
+                        </div> 
+                    </div>
+                    <hr>
+                  
+                    <div class="form-group px-4 " style="display: flex;font-size: 20px;justify-content: space-between;" >
+                        <div style="display: flex;align-items: center;" >
+                            <label for="" style="color: gray;" > username</label>
+                        </div>
+                        <div>
+                            <h3 style="color: black;display: flex;padding: 0px;margin: 0px;" >   {{request.session.email}}</h3>   
+                        </div> 
+                    </div>
+                    <hr>
+                    <div class="form-group px-4" style="display: flex;font-size: 20px;justify-content: space-between;" >
+                        <div style="display: flex;align-items: center;" >
+                            <label for="" style="color: gray;" > role</label>
+                        </div>
+                        <div>
+                            <h3 style="color: black;display: flex;padding: 0px;margin: 0px;" >   {{request.session.role}}</h3>   
+                        </div> 
+                    </div>
+                    <hr>
+                    <div class="form-group px-4 " style="display: flex;font-size: 20px;justify-content: space-between;" >
+                        <div style="display: flex;align-items: center;" >
+                            <label for="" style="color: gray;" > streams</label>
+                        </div>
+                        <div>
+                            <h3 style="color: black;display: flex;padding: 0px;margin: 0px;" >   {{request.session.streams}}</h3>   
+                        </div> 
+                    </div>
+
+                    <div class="form-group px-4 text-center"  >
+                            <a  href="logout" class="btn btn-default btn-lg" >sign out</a>
+                    </div>
+                    
+                </div>
+               
+                
+        </div>    
+
+
+        </body>
+        </html>
+        <style>
+        .menu
+        {
+            list-style-type: none;
+            padding: 0px;
+            margin: 0px;
+            display: inline-block;
+        }
+        .menu li
+        {
+            padding: 15px;
+            float: left;
+        }   
+        .menu li a:hover
+        {
+            color: white;
+        }   
+        
+        
+        .menu li a
+        {
+            display: inline-block;
+            color: gray;
+            text-decoration: none;
+            font-size: 20px;
+            padding: 10px !important;
+        }   
+        
+        
+        </style>
+        
+        <script>
+
+            $(function()
+            {
+                
+                var arr = location.pathname.split('/');
+                    $('.url').text("dashboard > "+arr[2]);
+                    $('.header').text(arr[2].split('_')[0]+" "+(arr[2].split('_')[1] == undefined ? "":arr[2].split('_')[1]));
+            });    
+
+            $(function()
+            {
+                var pathname = window.location.pathname.split('/')[2];
+                $("#"+pathname).css('color','white');
+            });
+
+
+    $(document).ready(function(){
+
+        $('#profile').on('click',function()
+        {
+              $('.profile-box').toggleClass('collapse');      
+        });
+
+      $("#myInput").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#myTable tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+    });
+
+        </script>

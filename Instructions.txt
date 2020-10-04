@@ -1,0 +1,8 @@
+How to run the project
+
+1. install python 3.7 or higher from python official website  https://www.python.org/downloads/
+2. install django on windows see https://docs.djangoproject.com/en/3.1/howto/windows/
+3. install mysql create database with name "db_music" remember while installing the mysql.set the username "root" and password:"1234567" as show n in the vedio
+4. install the visual studio code https://code.visualstudio.com/download
+5. watch the attached vedio to see how to open the project and run in the visual studio code editor
+6. before run the command "python manage.py runserver", you must run "python manage.py migrate" to create the tables in the database

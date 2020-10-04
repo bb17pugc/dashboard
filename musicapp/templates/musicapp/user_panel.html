@@ -1,0 +1,725 @@
+
+{% extends 'musicapp/user_layout.html' %}
+{% load static %}
+{% block content %} 
+
+<div class="card px-4" style="padding: 0px;" >
+        
+<div class="col-lg-12 col-md-12 col-sm-12" style="padding: 0px;" >
+  <div class="col-lg-12 col-md-12 col-sm-12  text-center" style="padding: 0px;overflow: hidden;" >
+          <h3 for="" style="font-size: 25px;" class="text-center" id="songname" >paste link below to detect song  </h3>
+  </div>
+  <div  class="col-lg-12 col-md-12 col-sm-12 border" style="padding: 0px;display: flex;align-items: center;" >
+    <div class="col-lg-10 col-md-10 col-sm-10" >
+      <input type="text" placeholder="enter link here"   style="padding: 10px;font-size: 30px;width: 100%;border: none;outline: none;" >
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-2" style="display: table-column;" >
+        <button class="btn btn-justified btn-block btn-lg" >
+            Search
+        </button>
+    </div>
+   <div class="col-lg-12 col-md-12 col-sm-12 collapse" >
+          <audio class="collapse"  onplaying="playing(this)"  onplay="isplaying(this)" style="width: 100%;" id="audio" controls >
+              <source  id="audiosource" src="http://provisioning.streamtheworld.com/pls/KYWAM.pls"  type="audio/mpeg" >
+    </audio>
+    <div>
+      <input type="range" id="points"  style="font-size: 20px;height: 80px;color: green;" name="points" min="0" value="0"  >
+    </div>
+    <div  style="display: flex;justify-content:flex-end;" >
+      
+      <div  style="display: flex;justify-content: flex-end;" >
+        <p for="" id="currentTime" style="font-size: 28px;" >00:00</p>
+        <p style="font-size: 28px;" >/</p>
+        <p for="" id="totalTime" style="font-size: 28px;" >00:00</p>  
+      </div>
+      
+    </div>
+    <br>
+    <div class="col-lg-12 col-md-12 col-sm-12" style="padding: 0px;display: flex;justify-content: space-between;align-items: center;" >
+      <div>
+        <button class="btn btn-default btn-lg btn-song-play" style="background-color: brown;color: white;outline: none;border: none;" onclick="play(this,document.getElementById('audio'))"  >play</button>
+        <button class="btn btn-default" onclick="next('-1')" ><i class="fa fa-angle-left" ></i></button>
+        
+        <button class="btn btn-default" onclick="backward(document.getElementById('audio'))" ><i class="fa fa-backward" ></i></button>
+        <button class="btn btn-default" onclick="forward(document.getElementById('audio'))" ><i class="fa fa-forward" ></i></button>
+        <button class="btn btn-default" onclick="next('1')" ><i class="fa fa-angle-right" ></i></button>
+        <button class="btn btn-default" onclick="repeat(this,document.getElementById('audio'))" > <i class="fas fa-redo" ></i> </button>  
+      </div>
+      <div  style="padding: 0px;display: flex;align-items: center;" >
+        <i class="fas fa-volume-up fa-2x mx-2" ></i>
+        <label for="" id="soundlbl" class="mx-2" >0%</label>
+        <input type="range" id="volume"  min="0" value="10" max="10">
+      </div>
+    </div>
+    <br>
+    <br>
+      </div>
+
+
+  </div>
+ 
+
+<div class="col-lg-12 col-md-12 col-sm-12" style="height:fit-content;padding: 0px;" >
+<hr>
+<div class="col-lg-12 col-md-12 col-sm-12 card" style="padding: 0px;" > 
+      <div class="col-lg-12 col-md-12 col-sm-12 border shadow" style="display: flex;align-items: center;" >
+            <div class="col-lg-11 col-md-12 col-sm-12" style="padding:0px;" >
+              <div class="collapse col-lg-12 col-md-12 col-sm-12 progressbox" style="padding:0px;" >
+                    <div class="col-lg-12 col-md-12 col-sm-12" style="padding:0px;"  >
+                      <div id="progressbar" style="width:01%;background-color: royalblue;height: 20px;" >
+
+                      </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12" style="padding:0px;display: flex;justify-content: space-between;"  >
+                      <div>
+                        <label for="">scanning...</label>
+                      </div>  
+                      <div>
+                          <label for="" id="filesCount" >0</label>
+                          <label for="">/</label>
+                          <label for="" id="filestotalCount" >0</label>  
+                        </div>
+                        
+                    </div>
+                    
+                    
+              </div> 
+              <div class="col-lg-12 col-md-12 col-sm-12 myplaylist" >
+                    <h3 for="">{{songs | length}} files scanned</h3>
+              </div>
+            </div>
+      
+            <div class="col-lg-1 col-md-12 col-sm-12" style="padding: 0px;"  >
+              <div class="col-lg-12 col-md-12 col-sm-12" style="display: flex;align-items: center;justify-content: center;" >
+              <form action="" method="POST"  id="post-form" enctype="multipart/form-data" style="margin: 0px;" >
+                {% csrf_token %}
+                <label   for="audioinput" id="lblvedio" style="max-width: none;" >
+                  <input accept=".mp3" onchange="upload(this)" type="file" name="audio" id="audioinput" class="collapse" multiple >
+                  <i class="fa fa-folder fa-2x" style="color: orange;" >
+                    
+                      </i>
+                      scan
+              </label>
+        </form>
+      </div>
+       
+            </div>
+            
+      </div>
+      
+      <div class="col-lg-12 col-md-12 col-sm-12 shadow card collapse"  >
+        <div class="col-lg-12 col-md-12 col-sm-12 py-2" style="padding: 0px;" >
+          <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for songs.." title="Type  a name" class="form-control" style="font-size:20px !important;" >
+        </div>
+        
+        {% if songs %}
+                
+            <ul id="myUL" class="songlist" >
+              
+              {% for i in songs %}
+              <li class="border song-elements" id="{{i.id}}"  >
+                <a href="#">
+                <div  style="display: flex;justify-content: space-between;align-items: center;">
+                  <h3>{{i.Name}}</h3>  
+                  <div class="btn-group-vertical">
+                    <button class='btn btn-default btn-lg btn-play' >play</button>
+                    <a href="delete_song?id={{i.id}}" class="btn btn-danger" style="color: white;text-decoration: none;" >delete</a>
+                  </div>
+                </div>
+              </a>
+            </li>
+
+            
+              {% endfor %}
+                
+            </ul>
+            {% else %}
+            <h3 class="text-center" style="color: gray;" >no songs in playlist</h3>   
+        {% endif %}  
+       <br>         
+      </div>
+</div>
+
+</div>
+
+</div>
+<br>  
+</div>
+
+<style>
+  .fa-folder
+  {
+    cursor: pointer;
+  }
+  .active
+  {
+    background-color: green;
+    color: white;
+  }
+.songlist
+{
+  list-style-type: none;
+  padding: 0px;
+  margin: 0px;
+}
+.songlist li
+{
+  padding: 10px;
+}
+.songlist li a
+{
+  text-decoration: none;
+  word-break: break-all;
+}
+/* song name animntions */
+button
+{
+  outline: none !important;
+}
+ .songname
+{
+  animation: songanimation 30s infinite;;
+  
+} 
+@keyframes songanimation {
+  0%{
+    transform: translate(1000px,0px);
+    opacity: 0;
+  }
+  50%
+  {
+    opacity: 1;
+  }
+  100%{
+    opacity: 0;
+    transform: translate(-800px,0);
+    
+  }
+}
+
+/* input type range style */
+input[type=range] {
+  -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
+  width: 100%; /* Specific width is required for Firefox. */
+  background: transparent; /* Otherwise white in Chrome */
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+}
+
+input[type=range]:focus {
+  outline: none; /* Removes the blue border. You should probably do some kind of focus styling for accessibility reasons though. */
+}
+
+input[type=range]::-ms-track {
+  width: 100%;
+  cursor: pointer;
+
+  /* Hides the slider so custom styles can be added */
+  background: transparent; 
+  border-color: transparent;
+  color: transparent;
+}
+
+
+/* input type range style track */
+
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 2.4px;
+  cursor: pointer;
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+  background: #3071a9;
+  border-radius: 1.3px;
+  border: 0.2px solid #010101;
+}
+
+input[type=range]:focus::-webkit-slider-runnable-track {
+  background: #367ebd;
+}
+
+input[type=range]::-moz-range-track {
+  width: 100%;
+  height: 8.4px;
+  cursor: pointer;
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+  background: #3071a9;
+  border-radius: 1.3px;
+  border: 0.2px solid #010101;
+}
+
+input[type=range]::-ms-track {
+  width: 100%;
+  height: 8.4px;
+  cursor: pointer;
+  background: transparent;
+  border-color: transparent;
+  border-width: 16px 0;
+  color: transparent;
+}
+input[type=range]::-ms-fill-lower {
+  background: #2a6495;
+  border: 0.2px solid #010101;
+  border-radius: 2.6px;
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+}
+input[type=range]:focus::-ms-fill-lower {
+  background: #3071a9;
+}
+input[type=range]::-ms-fill-upper {
+  background: #3071a9;
+  border: 0.2px solid #010101;
+  border-radius: 2.6px;
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+}
+input[type=range]:focus::-ms-fill-upper {
+  background: #367ebd;
+}
+
+
+
+/* input type style whole */
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  border: 1px solid #000000;
+  height: 35px;
+  width: 35px;
+  border-radius: 300px;
+  background: #ffffff;
+  cursor: pointer;
+  margin-top: -17px; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d; /* Add cool effects to your sliders! */
+}
+
+/* All the same stuff for Firefox */
+input[type=range]::-moz-range-thumb {
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+  border: 1px solid #000000;
+  height: 36px;
+  width: 16px;
+  border-radius: 3px;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+/* All the same stuff for IE */
+input[type=range]::-ms-thumb {
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+  border: 1px solid #000000;
+  height: 36px;
+  width: 16px;
+  border-radius: 3px;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+    #loading {
+		-webkit-animation: rotation 2s infinite linear;
+}
+
+@-webkit-keyframes rotation {
+		from {
+				-webkit-transform: rotate(0deg);
+		}
+		to {
+				-webkit-transform: rotate(359deg);
+		}
+}
+</style>
+<script>
+
+function repeat(self,tag)
+{
+  if(tag.loop == true)
+  {
+    tag.loop = false;
+
+    
+    $(self).css('background-color','white');
+    $(self).css('color','black');
+
+  }
+  else
+  {
+    
+    $(self).css('background-color','green');
+    $(self).css('color','white');
+    tag.loop = true;
+  }
+
+}
+
+function next(value)
+{
+  $("#songname").removeClass('songname'); 
+  $("#songname").text('loading...'); 
+  
+  var pics = document.getElementsByClassName('song-elements');
+        for (i = 0; i < pics.length; i++) 
+        {
+           var name=$(pics[i]).find('button').text();
+           
+           
+           if(name != "playing") 
+           {
+             continue;
+           }
+           else
+           {
+             
+                if(i == pics.length-1)
+                {
+                  $(pics[i]).find('button').text("play");
+                  $(pics[i]).find('button').css("background-color","white");
+                  $(pics[i]).find('button').css("color","black");
+
+                  $(pics[0]).find('button').text("playing");
+                  $(pics[0]).find('button').css("background-color","green");
+                  $(pics[0]).find('button').css("color","white");
+                  var song=$(pics[0]).find('h3').text();
+                  playSong(song);
+                  return true;
+                }
+                else
+                {
+                  $(pics[i]).find('button').text("play");
+                  $(pics[i]).find('button').css("background-color","white");
+                  $(pics[i]).find('button').css("color","black");
+                  if(value == "-1")
+                  { 
+                    $(pics[i-1]).find('button').text("playing");
+                    var song=$(pics[i-1]).find('h3').text();
+                    $(pics[i-1]).find('button').css("background-color","green");
+                    $(pics[i-1]).find('button').css("color","white");
+                    
+                    playSong(song);
+                  }
+                  else
+                  {
+                    $(pics[i+1]).find('button').text("playing");
+                    var song=$(pics[i+1]).find('h3').text();
+                    $(pics[i+1]).find('button').css("background-color","green");
+                    $(pics[i+1]).find('button').css("color","white");
+                    
+                    playSong(song);
+                  }
+                  
+                  return true;
+                }
+           }
+        }
+        $(pics[0]).find('button').text("playing");
+        var song=$(pics[i+1]).find('h3').text();
+        $(pics[0]).find('button').css("background-color","green");
+        $(pics[0]).find('button').css("color","white");
+        playSong(song);
+}
+
+
+function myFunction() {
+    var input, filter, ul, li, a, i, txtValue;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    ul = document.getElementById("myUL");
+    li = ul.getElementsByTagName("li");
+    for (i = 0; i < li.length; i++) {
+        a = li[i].getElementsByTagName("a")[0];
+        txtValue = a.textContent || a.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            li[i].style.display = "";
+        } else {
+            li[i].style.display = "none";
+        }
+    }
+}
+
+
+    function backward(tag)
+    {
+        tag.currentTime = tag.currentTime-10; 
+    }
+    function forward(tag)
+    {
+        tag.currentTime = tag.currentTime+10; 
+    }
+    
+    function isplaying(tag)
+    {
+         
+    }
+
+    function play(btn,tag)
+    {
+        if(!tag.paused)
+        {
+            tag.pause();   
+            $(btn).css("background-color", "brown");
+            $(btn).text("play");
+            // $("#songname").text(data.file);  
+            $("#songname").removeClass('songname');  
+        }
+        else
+        {
+            tag.play();
+            $(btn).css("background-color", "green");
+            $(btn).text("pause");
+        }
+
+    }
+
+    function playSong(name)
+    {
+      var audio = document.getElementById('audio');
+                        // $("#video").removeClass('collapse');
+                        // $("#lblvedio").addClass('collapse');
+                       
+                        var source = document.getElementById('audiosource');
+    
+                        source.setAttribute('src', '/media/files/'+name);
+                        
+                        setTimeout(function() {  
+                            audio.pause();    
+                            // $("#vedioname").val(data.file);    
+                            audio.load();
+                            audio.play();
+                            // $(".vedio-loader").addClass('collapse');
+                        }, 3000);
+    }
+
+    function playing(tag)
+    {
+      
+       
+        $('.btn-song-play').css("background-color", "green");
+        $('.btn-song-play').text("pause");
+        $('.fa-music-div').removeClass('collapse');
+        $(tag).siblings('button').text("playing");
+        $("#points").attr('max',tag.duration);
+        $("#points").val(tag.currentTime);
+        totalminutes = Math.floor(parseFloat(tag.duration)/60);
+        totalseconds=Math.floor((parseInt(tag.duration)/60 - Math.floor(parseInt(tag.duration)/60))*10);
+        
+        // settingup values
+        $("#soundlbl").text(tag.volume*100+"%");
+
+
+        if(totalminutes < 10)
+        {
+          totalminutes = "0"+totalminutes;
+        }
+        
+        $("#totalTime").text(totalminutes+":0"+totalseconds);
+        tag.volume = parseFloat($("#volume").val())/10;
+
+       
+         var name = $(tag).children("#audiosource").attr('src').split('/')[3];
+         
+        $.ajax({
+                    type: 'GET',
+                    url : 'find_song?name='+name,
+                   
+                    success: function (data) {
+                        console.log(data);
+                        $("#songname").text(data.file);  
+                        $("#songname").addClass('songname');  
+                           
+                    },
+                    error: function(data) {
+                    }
+            });
+    }
+
+    function reset()
+    {
+      var pics = document.getElementsByClassName('song-elements');
+            for (i = 0; i <= pics.length; i++) 
+          {
+            $(pics[i]).find('button').text("play");
+            $(pics[i]).find('button').css("background-color" , "white");
+            $(pics[i]).find('button').css("color" , "black");
+            
+          }
+    }
+
+    $(document).ready(function(){
+
+        $('.btn-play').on('click',function(){
+          $("#songname").removeClass('songname'); 
+          $("#songname").text('loading...'); 
+          
+            reset();
+            var name = $(this).closest('li').find('h3').text();
+            $(this).text('playing');
+            $(this).css('background-color','green');
+            $(this).css('color','white');
+            playSong(name);  
+
+        });
+
+        $("audio#audio").get(0).addEventListener("timeupdate",function(){
+              var tag=document.getElementById('audio');
+              $("#points").val(tag.currentTime);
+
+              if( parseInt(tag.currentTime) > 3600 )
+              {
+                duration=parseInt(tag.currentTime) / 3600
+                $("#currentTime").text(duration+"");
+              }
+              else if (parseInt(tag.currentTime) > 60)
+              {
+                minutes= Math.floor(parseInt(tag.currentTime)/60); 
+                seconds = (parseInt(tag.currentTime)/60) - Math.floor(parseInt(tag.currentTime)/60);
+                if(seconds*10 > 10 )
+                {
+                  $("#currentTime").text(minutes+":"+Math.floor(seconds*10));
+                } 
+                else
+                {
+                  $("#currentTime").text(minutes+":0"+Math.floor(seconds*10));
+                } 
+                
+              }
+              else
+              {
+                seconds=parseInt(tag.currentTime)
+                if(seconds >= 10)
+                {
+                  $("#currentTime").text("00:"+seconds);
+                }
+                else
+                {
+                  $("#currentTime").text("00:0"+seconds);
+                }
+              }
+              
+    });
+
+    $("#volume").on('change',function()
+    {
+        var tag=document.getElementById('audio');
+        var vol = parseFloat($(this).val())/100;
+        var percentage = Math.floor((vol*100/1)*10);
+        $(tag).prop("volume", vol*10);
+        $("#soundlbl").text(percentage+"%");
+        if(percentage == 0)
+        {
+
+        }
+        else if(percentage == 100)
+        {
+
+        }
+        else
+        {
+            $('.fa-volume-down').siblings('i').addClass('collapse');
+            $('.fa-volume-up').addClass('collapse');
+            $('.fa-volume-mute').addClass('collapse');   
+        }
+    });
+
+    $("#points").on('change',function()
+    {
+        var tag=document.getElementById('audio');
+        var vol = parseFloat($(this).val());
+        $(tag).prop("currentTime", vol);
+    })
+
+    });
+             
+              
+    
+     function upload(vedio)
+     {
+        var streams = "{{request.session.streams}}";
+        if (vedio.files && parseInt(streams) >= vedio.files.length ) {
+         
+            for(i=0;i < vedio.files.length ; i++)
+            {
+              var formData = new FormData();
+                formData.append('audio' , vedio.files[i]);
+                
+                $('.myplaylist').addClass('collapse');
+                $('.progressbox').removeClass('collapse');
+                $.ajax({
+                    type: 'POST',
+                    url : 'upload_audio_file',
+                    headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                    data :formData ,
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+                        var val = parseInt($("#filesCount").text());
+                        val = val+1;  
+                        var percentage = val*100/vedio.files.length;
+                        $("#filesCount").text(val);
+                        $("#filestotalCount").text(vedio.files.length);
+                        $("#progressbar").css('width',percentage+'%');
+                        
+                        if(val == vedio.files.length)
+                        {
+                            $('.myplaylist').removeClass('collapse');
+                            $('.progressbox').addClass('collapse');
+                            $("#progressbar").css('width','0%');
+                            $("#filesCount").text("0");
+                            $("#filestotalCount").text("0");
+                            location.reload(true);
+                        }
+                        if(data.file != '400')
+                        {
+                          
+                        $("#myUL").append("<li id='"+data.id+"' class='border' >"+
+                        "<a href='#'>"+
+                        "<div  style='display: flex;justify-content: space-between;align-items: center;'><h3>"+data.file+"</h3 >"+  
+                        "<button class='btn btn-default btn-lg' >play</button>"+
+                        "</div></a></li>"); 
+                      }
+                        // var audio = document.getElementById('audio');
+                        // // $("#video").removeClass('collapse');
+                        // // $("#lblvedio").addClass('collapse');
+                       
+                        // var source = document.getElementById('audiosource');
+    
+                        // source.setAttribute('src', '/media/files/'+data.file);
+                        
+                        // setTimeout(function() {  
+                        //     audio.pause();    
+                        //     // $("#vedioname").val(data.file);    
+                        //     audio.load();
+                        //     audio.play();
+                        //     // $(".vedio-loader").addClass('collapse');
+                        // }, 3000);
+                            
+                          
+                    },
+                    error: function(data) {
+                        alert("Error !try again")
+                        $(".error").removeClass('collapse');
+                        $(".vedio-loader").addClass('collapse');
+                    }
+            });
+            }
+       
+        }    
+        else
+        {
+          alert("only "+streams+" are allowed");
+        }
+        
+     }   
+    
+    
+       
+    </script>
+
+{% endblock content %}
+   

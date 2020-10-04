@@ -1,0 +1,122 @@
+{% extends 'musicapp/layout.html' %}
+{% load static %}
+{% block content %}
+<div class="col-lg-12 col-md-12 col-sm-12"  >
+    <div class="col-lg-12 col-md-12 col-sm-12 my-4" style="padding:0px;"  >
+            <h3>
+                 Select Date
+             </h3>  
+            
+             <form action="" method="POST" >
+                {% csrf_token %}
+
+               
+                <div class="col-lg-4 col-md-12 col-sm-12" style="padding:0px;" >
+                    <div class="form-group" >
+                        <select class="form-control" name="user" style="height: 60px;" id="">
+                            <option value="0"   >
+                                Select faculty
+                            </option>
+                            
+                            {% for i in users %}
+            
+                            <option value="{{i.id}}"   >
+                                {{i.Username}}
+                            </option>
+                            
+                            {% endfor %}                           
+                        </select>                    </div>
+                </div>
+
+             <div class="col-lg-4 col-md-12 col-sm-12" style="padding:0px;" >
+                 <div class="form-group" >
+                    <input type="date" class="form-control" name="date1" required>
+                 </div>
+             </div>
+             <div class="col-lg-4 col-md-12 col-sm-12" style="padding:0px;" >
+                 <div class="form-group" >
+                    <input type="date" class="form-control"  name="date2" required>
+                 </div>
+
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12"  >
+                   <input type="submit" name="" value="Filter" class="btn btn-success btn-lg" id=""> 
+                    <a href="admin_reports" class="btn btn-primary btn-lg" >Clear</a>
+            </div>
+            </form> 
+    </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 py-4" style="display: flex;align-items: center;justify-content: center;margin: 0px;" >
+        {% if date1 %}        
+        <h4 for="" class="alert alert-primary">Showing <b>{{songs | length}}</b> resluts for: <b>{{selected.Username}} </b> from <b> {{date1}} </b> to <b>{{date2}}</b> </h4>
+        {% else %}
+        <label for="" class="alert alert-grey" style="background-color: gainsboro;" >no matched results</label>  
+        {% endif %}
+    </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 card py-4">
+        <table  class="text-center" id="myTable" >
+            <tr>
+                <th>
+                   <h4> <label for="">#</label> </h4>
+                </th>
+                <th>
+                    <h4> <label for="">Name</label> </h4>
+                </th>
+                <th>
+                    <h4> <label for="">Play count</label> </h4>
+                </th>
+                <th>
+                    <h4> <label for="">User</label> </h4>
+                </th>
+            </tr>
+            {% for i in songs %}
+                    
+            <tr>
+                        <td>
+                            {{forloop.counter}}
+                        </td>
+                        <td>
+                           {{ i.Name}}
+                        </td>
+                        <td>
+                            {{i.total}}
+                        </td>
+                        <td>
+                            <a href="setting?id={{i.User_id}}"> View Profile </a>
+                        </td>
+            </tr>
+            {% endfor %}
+         
+        </table>
+    </div>
+</div>   
+ 
+<style>
+
+    table tr td , th
+    {
+        border: solid 1px #eed;
+        text-align: center;
+    }
+    table tr td
+    {
+        padding: 20px;
+        font-size: 20px;
+    }
+    .DatePickerInput::-webkit-inner-spin-button,
+ .DatePickerInput::-webkit-calendar-picker-indicator {
+     opacity:0;   
+    -webkit-appearance: none;
+ }
+    .form-group input
+    {
+            height:  60px;
+            font-size: 20px;
+    }
+    input[type="submit"] , select
+    {
+            font-size: 20px !important;
+    }
+    
+</style>  
+
+{% endblock content %}

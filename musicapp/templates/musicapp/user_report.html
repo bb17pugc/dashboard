@@ -1,0 +1,102 @@
+
+{% extends 'musicapp/user_layout.html' %}
+{% load static %}
+{% block content %}
+<div class="col-lg-12 col-md-12 col-sm-12" style="padding: 0px;" >
+    <div class="col-lg-12 col-md-12 col-sm-12 card"  >
+            <h3>
+                 Select Date
+             </h3>  
+            
+             <form action="" method="POST" >
+                {% csrf_token %}
+             <div class="col-lg-6 col-md-12 col-sm-12" >
+                 <div class="form-group" >
+                    <input type="date" class="form-control" name="date1" required>
+                 </div>
+             </div>
+             <div class="col-lg-6 col-md-12 col-sm-12" >
+                 <div class="form-group" >
+                    <input type="date" class="form-control"  name="date2" required>
+                 </div>
+
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12"  >
+                   <input type="submit" name="" value="Filter" class="btn btn-success btn-lg" id=""> 
+                    <a href="user_report" class="btn btn-primary btn-lg" >Clear</a>
+            </div>
+            </form> 
+    </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 py-4 card" style="display: flex;align-items: center;margin: 0px;" >
+        {% if date1 %}        
+        <h4 for="" class="alert alert-primary">Showing <b>{{songs | length}}</b> resluts for: <b> {{date1}} </b> to <b>{{date2}}</b> </h4>
+         <input type="text" id="myInput" class="form-control" placeholder="search report" style="font-size: 20px;padding: 20px;" name="" id="">   
+        {% else %}
+        <label for="" class="alert alert-grey" style="background-color: gainsboro;" >no matched results</label>  
+        {% endif %}
+    </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 card py-4">
+        <table  class="text-center"  >
+            <thead>
+                <th>
+                   <h4><label for="">#</label></h4>
+                </th>
+                <th>
+                    <h4><label for="">Name</label></h4>
+                </th>
+                <th>
+                    <h4><label for="">Play count</label></h4>
+                </th>
+            </thead>
+            <tbody id="myTable" >
+           
+            {% for i in songs %}
+                
+            <tr>
+                        <td>
+                            {{forloop.counter}}
+                        </td>
+                        <td>
+                           {{ i.Name}}
+                        </td>
+                        <td>
+                            {{i.total}}
+                        </td>
+            </tr>
+            {% endfor %}
+        </tbody>   
+        </table>
+    </div>
+  
+</div>    
+<style>
+
+    table tr td , th
+    {
+        border: solid 1px #eed;
+        text-align: center;
+        font-size: 20px;
+    }
+    table tr td
+    {
+        padding: 20px;
+    }
+
+    .DatePickerInput::-webkit-inner-spin-button,
+ .DatePickerInput::-webkit-calendar-picker-indicator {
+     opacity:0;   
+    -webkit-appearance: none;
+ }
+    .form-group input
+    {
+            height:  60px;
+            font-size: 20px;
+    }
+    input[type="submit"]
+    {
+            font-size: 20px;
+    }
+    
+</style>  
+{% endblock content %}
+   
